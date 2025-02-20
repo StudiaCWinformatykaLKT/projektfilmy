@@ -1,0 +1,14 @@
+import requests #łączenie sie z api
+import json #obsługa json
+import webbrowser #otwieranie przeglądarki
+from pprint import pprint #ulepszone print
+
+r = requests.get('https://cataas.com/cat?json=true')
+
+try:
+    contetnt = r.json()
+except json.decoder.JSONDecodeError:
+    print("Niepoprawny format JSON")
+else:
+    pprint(contetnt)
+    webbrowser.open_new_tab(contetnt["url"])
