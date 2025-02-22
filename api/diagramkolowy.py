@@ -23,5 +23,6 @@ fig.gca().add_artist(center_circle)
 
 plt.axis ('equal')
 plt.title('Donut diagram')
+plt.savefig('diagram_kolowy.png', dpi=300) # wywołanie zapisu przed show, aby poprawnie wyrenderowało obrazek
 plt.show()
-plt.savefig('diagram_kolowy.png', dpi=300)
+
