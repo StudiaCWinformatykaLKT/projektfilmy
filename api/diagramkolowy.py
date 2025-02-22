@@ -1,3 +1,8 @@
+"""
+pomysł na diagram kołowy, który będzie wypsiywał jaki rodzaj filmów jest najszęściej wybierany na podstawie ulubionych filmów uzytkownika
+do ogarnięcia tagi i baza danych ulubionych filmów użytkownika
+"""
+
 import matplotlib.pyplot as plt
 
 labels =[
