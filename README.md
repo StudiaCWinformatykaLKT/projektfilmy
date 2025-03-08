@@ -1,2 +1,2 @@
 # projektfilmy
-projekt pipsil sem4 rok2025
+projekt pipsil i psbd sem4 rok2025
