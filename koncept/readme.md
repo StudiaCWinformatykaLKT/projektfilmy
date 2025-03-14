@@ -1,0 +1,1 @@
+pomysły dla projektu
