@@ -10,11 +10,11 @@
 
 ## Instalacja
 
-1. ** Otwórz terminal (w PHPStorm Alt+F12).**
+1. **Otwórz terminal (w PHPStorm Alt+F12).**
 2.  **Sklonuj repozytorium:**
 
     ```bash
-    git clone [https://github.com/your-username/projektfilmy.git](https://github.com/your-username/projektfilmy.git)
+    git clone [https://github.com/your-username/projektfilmy.git]
     cd projektfilmy/filmy
     ```
 
