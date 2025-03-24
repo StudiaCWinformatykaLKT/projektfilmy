@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 
+
 <head>
 
     <meta charset="utf-8">
@@ -344,8 +345,8 @@
                     <!-- Page Heading -->
                     <div class="mb-4 d-sm-flex align-items-center justify-content-between">
                         <h1 class="mb-0 text-gray-800 h3">Witaj na stronie z kotkami i filmami :&#41; </h1>
-                        <a href="#" class="shadow-sm d-none d-sm-inline-block btn btn-sm btn-primary"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Ten przycisk będzie coś robił ??</a>
+                        <a href="#" class="shadow-sm d-none d-sm-inline-block btn btn-sm btn-primary">
+                        <strong>DATA: {{ date('d-m-y') }} </strong></a>
                     </div>
 
             @yield('content')
@@ -434,6 +435,7 @@
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
 
+    <script src="{{ asset('js/data.js') }}"></script>
 </body>
 
 </html>

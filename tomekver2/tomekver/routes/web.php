@@ -1,18 +1,18 @@
 <?php
 
 
-use App\Http\Controllers\NavigationController;
+use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MovieController;
+
 
 
 Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/cat', [NavigationController::class, 'cat'])->name('cat');
-Route::get('/films', [NavigationController::class, 'films'])->name('films');
-Route::get('/user', [NavigationController::class, 'user'])->name('user');
-Route::get('/', [NavigationController::class, 'getCatImage'])->name('cat.image');
+Route::get('/cat', [MainController::class, 'cat'])->name('cat');
+Route::get('/films', [MainController::class, 'films'])->name('films');
+Route::get('/user', [MainController::class, 'user'])->name('user');
+Route::get('/', [MainController::class, 'getCatImage'])->name('cat.image');
 
-Route::get('/search', [MovieController::class, 'search'])->name('movies.search');
+Route::get('/search', [MainController::class, 'search'])->name('movies.search');
