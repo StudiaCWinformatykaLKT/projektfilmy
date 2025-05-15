@@ -123,7 +123,7 @@
 
             <!-- Sidebar Message -->
             <div class="sidebar-card d-none d-lg-flex">
-                <img class="mb-2 sidebar-card-illustration" src="img/undraw_rocket.svg" alt="...">
+                <img class="mb-2 sidebar-card-illustration" src="/img/undraw_rocket.svg" alt="...">
                 <p class="mb-2 text-center"><strong>sb-admin-2</strong> Strona szablonu</p>
                 <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-2" target="_blank">LINK</a>
             </div>

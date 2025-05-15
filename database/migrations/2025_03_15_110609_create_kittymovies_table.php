@@ -18,16 +18,21 @@ return new class extends Migration
         });
 
         Schema::create('bazfilmow', function (Blueprint $table) {
-            $table->id();
+            $table->id(); 
             $table->timestamps();
-            $table->string('name');
-            $table->string('gatunek');
-            $table->float('srednia');
-            $table->integer('ocena');
-            $table->string('dodanoprzez');
-            $table->year('rokpremiery');
-            $table->text('komentarz')->nullable();
-            $table->string('image');
+            $table->boolean('adult')->default(false);
+            $table->string('backdrop_path')->nullable(); 
+            $table->string('original_language', 10)->nullable(); 
+            $table->string('original_title')->nullable(); 
+            $table->text('overview')->nullable();
+            $table->float('popularity')->nullable(); 
+            $table->string('poster_path')->nullable(); 
+            $table->string('release_date', 20)->nullable();
+            $table->string('title'); 
+            $table->boolean('video')->default(false); 
+            $table->float('vote_average')->nullable();
+            $table->integer('vote_count')->nullable();
+            $table->string('genre_ids')->nullable();
         });
 
         Schema::create('gatunek', function (Blueprint $table) {

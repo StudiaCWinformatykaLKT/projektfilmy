@@ -10,49 +10,72 @@ use Illuminate\Support\Facades\Log;
 
 class MovieController extends Controller
 {
-    public function search(Request $request)
-    {
-        $query = $request->input('query');
+public function search(Request $request)
+{
+    $query = $request->input('query');
+
+$localMovies = DB::table('bazfilmow')
+    ->where('tytul', 'like', '%' . $query . '%')
+    ->get(['id', 'tytul', 'rok_premiery']);
+
+$movies = collect();
+
+if ($localMovies->isNotEmpty()) {
+    $movies = $localMovies->map(function ($movie) {
+        return [
+            'id' => $movie->id,
+            'title' => $movie->tytul,
+            'release_year' => $movie->rok_premiery,
+            'source' => 'local', // <- dodaj ten klucz
+        ];
+    });
+} else {
+    $apiKey = env('TMDB_API_KEY');
+    $response = Http::get("https://api.themoviedb.org/3/search/movie", [
+        'api_key' => $apiKey,
+        'query' => $query,
+    ]);
+    $apiMovies = $response->json('results') ?? [];
+    $movies = collect($apiMovies)->map(function ($movie) {
+        return [
+            'id' => $movie['id'],
+            'title' => $movie['title'],
+            'release_year' => isset($movie['release_date']) ? substr($movie['release_date'], 0, 4) : 'brak danych',
+            'source' => 'api', // <- dodaj ten klucz
+        ];
+    });
+}
+
+    return view('films', compact('movies'));
+}
+
+public function show(Request $request, $id)
+{
+    $source = $request->query('source', 'local');
+    if ($source === 'local') {
+        $movie = DB::table('bazfilmow')->where('id', $id)->first();
+    } else {
         $apiKey = env('TMDB_API_KEY');
-
-        $response = Http::get("https://api.themoviedb.org/3/search/movie", [
+        $response = Http::get("https://api.themoviedb.org/3/movie/{$id}", [
             'api_key' => $apiKey,
-            'query' => $query,
         ]);
-
-        $movies = $response->json();
-
-        if (isset($movies['results'])) {
-            $movies = $movies['results'];
-        } else {
-            $movies = [];
-        }
-        
-        $films = DB::table('bazfilmow')->get();
-        $catImageUrl = $this->getCatImageUrl();
-        return view('films', compact('movies','films', 'catImageUrl'));
+        $movie = $response->json();
     }
+    $catImageUrl = app(\App\Http\Controllers\MainController::class)->getCatImageUrl();
+    return view('movie_show', compact('movie', 'source', 'catImageUrl'));
+}
 
     private function getCatImageUrl()
 {
     $today = now()->toDateString();
-    Log::info('Dzisiaj:', ['today' => $today]);
-
     $catOfTheDay = DB::table('kotdnia')->whereDate('created', $today)->first();
-    Log::info('Kot dnia:', ['catOfTheDay' => $catOfTheDay]);
-
     if ($catOfTheDay) {
-        Log::info('Zwracany URL z bazy danych:', ['url' => $catOfTheDay->url]);
         return $catOfTheDay->url;
     } else {
         $response = Http::get('https://cataas.com/cat?type=medium&position=center&json=true');
-        Log::info('Odpowiedź z API:', ['response' => $response]);
-
         $data = $response->json();
-        Log::info('Dane z API:', ['data' => $data]);
-
         $newUrl = $data['url'];
-        Log::info('Nowy URL:', ['newUrl' => $newUrl]);
+
 
         DB::table('kotdnia')->insert([
             'created' => $today,

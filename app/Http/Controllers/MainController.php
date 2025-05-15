@@ -18,11 +18,19 @@ class MainController extends Controller
     }
 
     // Wyświetlanie filmów
-    public function films()
-    {
-        $films = DB::table('bazfilmow')->get();
-        $catImageUrl = $this->getCatImageUrl();
-        return view('films', compact('films', 'catImageUrl'));
+public function films()
+{
+    $films = DB::table('bazfilmow')->get();
+    $movies = collect($films)->map(function ($film) {
+        return [
+            'id' => $film->id,
+            'title' => $film->tytul,
+            'rokpremiery' => $film->rok_premiery,
+            'source' => 'local',
+        ];
+    });
+    $catImageUrl = $this->getCatImageUrl();
+    return view('films', compact('movies', 'catImageUrl'));
     }
 
     // Wyświetlanie użytkowników
@@ -44,17 +52,26 @@ class MainController extends Controller
             'query' => $query,
         ]);
 
+        // Dodaj to logowanie:
+        Log::info('Odpowiedź z TMDB:', ['response' => $response->json()]);
+
         $movies = $response->json();
 
         if (isset($movies['results'])) {
-            $movies = $movies['results'];
-        } else {
-            $movies = [];
-        }
+        $movies = collect($movies['results'])->map(function ($movie) {
+            return [
+                'id' => $movie['id'],
+                'title' => $movie['title'],
+                'release_year' => isset($movie['release_date']) && $movie['release_date'] ? substr($movie['release_date'], 0, 4) : 'brak danych',
+                'source' => 'api',
+            ];
+        });
+    } else {
+        $movies = collect();
+    }
 
-        $films = DB::table('bazfilmow')->get();
-        $catImageUrl = $this->getCatImageUrl();
-        return view('films', compact('movies', 'films', 'catImageUrl'));
+    $catImageUrl = $this->getCatImageUrl();
+    return view('films', compact('movies', 'catImageUrl'));
     }
 
     // Wyświetlanie losowego kota w layoucie
@@ -68,29 +85,18 @@ class MainController extends Controller
      * Helper function: Pobiera URL kota dnia z bazy danych lub API.
      */
 
-    private function getCatImageUrl()
+    public function getCatImageUrl()
     {
         $today = now()->toDateString();
-        Log::info('Dzisiaj:', ['today' => $today]);
-
-        // Sprawdź, czy istnieje wpis w tabeli `kotdnia` z dzisiejszą datą
         $catOfTheDay = DB::table('kotdnia')->whereDate('created_at', $today)->first();
-        Log::info('Kot dnia:', ['catOfTheDay' => $catOfTheDay]);
 
         if ($catOfTheDay) {
-            Log::info('Zwracany URL z bazy danych:', ['url' => $catOfTheDay->url]);
             return $catOfTheDay->url;
         } else {
             // Pobierz nowy obrazek z API
             $response = Http::get('https://cataas.com/cat?type=medium&position=center&json=true');
-            Log::info('Odpowiedź z API:', ['response' => $response]);
-
             $data = $response->json();
-            Log::info('Dane z API:', ['data' => $data]);
-
             $newUrl = $data['url'];
-            Log::info('Nowy URL:', ['newUrl' => $newUrl]);
-
             // Dodaj nowy wpis do tabeli `kotdnia`
             DB::table('kotdnia')->insert([
                 'created_at' => $today,

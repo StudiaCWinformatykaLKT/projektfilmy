@@ -17,14 +17,9 @@
                     <ul>
                         @foreach($movies as $movie)
                             <li>
-                                <h3>{{ $movie['title'] }}</h3>
-                                <p><strong>Opis:</strong> {{ $movie['overview'] }}</p>
-                                <p><strong>Data premiery:</strong> {{ $movie['release_date'] }}</p>
-                                <p><strong>Średnia ocena:</strong> {{ $movie['vote_average'] }}</p>
-                                <p><strong>Liczba głosów:</strong> {{ $movie['vote_count'] }}</p>
-                                @if(isset($movie['poster_path']))
-                                    <img src="https://image.tmdb.org/t/p/w200{{ $movie['poster_path'] }}" alt="{{ $movie['title'] }}">
-                                @endif
+                            <a href="{{ route('movies.show', ['id' => $movie['id'], 'source' => $movie['source'] ?? 'local']) }}">
+                            {{ $movie['title'] }} ({{ $movie['release_year'] }})
+                            </a>
                             </li>
                         @endforeach
                     </ul>
@@ -57,16 +52,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach($films as $film)
+                            @foreach($movies as $movie)
                             <tr>
-                                <td>{{ $film->name }}</td>
-                                <td>{{ $film->gatunek }}</td>
-                                <td>{{ $film->srednia }}</td>
-                                <td>{{ $film->ocena }}</td>
-                                <td>{{ $film->dodanoprzez }}</td>
-                                <td>{{ $film->rokpremiery }}</td>
-                                <td>{{ $film->komentarz }}</td>
-                                <td><img src="{{ $film->image }}" alt="{{ $film->name }}" style="width: 100px;"></td>
+                            <td>{{ $movie['title'] ?? '' }}</td>
+                            <td>{{ $movie['genre_ids'] ?? '' }}</td>
+                            <td>{{ $movie['vote_average'] ?? '' }}</td>
+                            <td>{{ $movie['vote_count'] ?? '' }}</td>
+                            <td>{{ $movie['original_language'] ?? '' }}</td>
+                            <td>{{ $movie['release_date'] ?? '' }}</td>
+                            <td>{{ $movie['overview'] ?? '' }}</td>
+                        <td>
+                        @if(!empty($movie['poster_path']))
+                        <img src="https://image.tmdb.org/t/p/w200{{ $movie['poster_path'] }}" alt="{{ $movie['title'] ?? '' }}" style="width: 100px;">
+                        @endif
+                        </td>
                             </tr>
                             @endforeach
                         </tbody>
