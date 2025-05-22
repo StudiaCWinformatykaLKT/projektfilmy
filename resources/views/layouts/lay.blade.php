@@ -35,11 +35,12 @@
             <hr>
             <a class="sidebar-brand d-flex align-items-center justify-content-center">
                 <div>
-                    <img src="/img/kittylogo.jpg" style="width: 100%; height: 100%; object-fit: cover;">
+                    <img src="/img/kittylogo.jpg" style="width: 100%; height: 100%; object-fit: cover;" alt="Logo">
                 </div>
             </a>
 
-            <!-- Divider --><hr>
+            <!-- Divider -->
+            <hr>
             <hr class="my-0 sidebar-divider">
 
             <!-- Nav Item - Dashboard -->
@@ -67,7 +68,8 @@
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="py-2 bg-white rounded collapse-inner">
                         <h6 class="collapse-header">API PAGES:</h6>
-                        <a class="collapse-item" href="https://developer.themoviedb.org/docs/getting-started" target="_blank">TMBD</a>
+                        <a class="collapse-item" href="https://developer.themoviedb.org/docs/getting-started"
+                            target="_blank">TMBD</a>
                         <a class="collapse-item" href="https://cataas.com/doc.html" target="_blank">CATASS</a>
                     </div>
                 </div>
@@ -123,9 +125,10 @@
 
             <!-- Sidebar Message -->
             <div class="sidebar-card d-none d-lg-flex">
-                <img class="mb-2 sidebar-card-illustration" src="/img/undraw_rocket.svg" alt="...">
+                <img class="mb-2 sidebar-card-illustration" src="/img/undraw_rocket.svg" alt="menu">
                 <p class="mb-2 text-center"><strong>sb-admin-2</strong> Strona szablonu</p>
-                <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-2" target="_blank">LINK</a>
+                <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-2"
+                    target="_blank">LINK</a>
             </div>
 
         </ul>
@@ -146,9 +149,12 @@
                     </button>
 
                     <!-- Topbar Search -->
-                    <form class="my-2 mr-auto d-none d-sm-inline-block form-inline ml-md-3 my-md-0 mw-100 navbar-search" action="{{ route('movies.search') }}" method="GET">
+                    <form
+                        class="my-2 mr-auto d-none d-sm-inline-block form-inline ml-md-3 my-md-0 mw-100 navbar-search"
+                        action="{{ route('movies.search') }}" method="GET">
                         <div class="input-group">
-                            <input type="text" class="border-0 form-control bg-light small" name="query" placeholder="Szukaj filmu" aria-label="Search" aria-describedby="basic-addon2">
+                            <input type="text" class="border-0 form-control bg-light small" name="query"
+                                placeholder="Szukaj filmu" aria-label="Search" aria-describedby="basic-addon2">
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="submit">
                                     <i class="fas fa-search fa-sm"></i>
@@ -166,16 +172,17 @@
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-search fa-fw"></i>
                             </a>
-                            <!-- Dropdown - Messages -->
+                            <!-- Dropdown - Search -->
                             <div class="p-3 shadow dropdown-menu dropdown-menu-right animated--grow-in"
                                 aria-labelledby="searchDropdown">
-                                <form class="mr-auto form-inline w-100 navbar-search">
+                                <form class="mr-auto form-inline w-100 navbar-search"
+                                    action="{{ route('movies.search') }}" method="GET">
                                     <div class="input-group">
                                         <input type="text" class="border-0 form-control bg-light small"
-                                            placeholder="Search for..." aria-label="Search"
-                                            aria-describedby="basic-addon2">
+                                            placeholder="Szukaj filmu" aria-label="Search"
+                                            aria-describedby="basic-addon2" name="query">
                                         <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
+                                            <button class="btn btn-primary" type="submit">
                                                 <i class="fas fa-search fa-sm"></i>
                                             </button>
                                         </div>
@@ -206,7 +213,8 @@
                                     </div>
                                     <div>
                                         <div class="text-gray-500 small">December 12, 2019</div>
-                                        <span class="font-weight-bold">A new monthly report is ready to download!</span>
+                                        <span class="font-weight-bold">A new monthly report is ready to
+                                            download!</span>
                                     </div>
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
@@ -231,7 +239,8 @@
                                         Spending Alert: We've noticed unusually high spending for your account.
                                     </div>
                                 </a>
-                                <a class="text-center text-gray-500 dropdown-item small" href="#">Show All Alerts</a>
+                                <a class="text-center text-gray-500 dropdown-item small" href="#">Show All
+                                    Alerts</a>
                             </div>
                         </li>
 
@@ -251,8 +260,7 @@
                                 </h6>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="mr-3 dropdown-list-image">
-                                        <img class="rounded-circle" src="img/undraw_profile_1.svg"
-                                            alt="...">
+                                        <img class="rounded-circle" src="img/undraw_profile_1.svg" alt="lista rozwijana">
                                         <div class="status-indicator bg-success"></div>
                                     </div>
                                     <div class="font-weight-bold">
@@ -263,8 +271,7 @@
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="mr-3 dropdown-list-image">
-                                        <img class="rounded-circle" src="img/undraw_profile_2.svg"
-                                            alt="...">
+                                        <img class="rounded-circle" src="img/undraw_profile_2.svg" alt="lista rozwijana">
                                         <div class="status-indicator"></div>
                                     </div>
                                     <div>
@@ -275,20 +282,20 @@
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="mr-3 dropdown-list-image">
-                                        <img class="rounded-circle" src="img/undraw_profile_3.svg"
-                                            alt="...">
+                                        <img class="rounded-circle" src="img/undraw_profile_3.svg" alt="lista rozwijana">
                                         <div class="status-indicator bg-warning"></div>
                                     </div>
                                     <div>
-                                        <div class="text-truncate">Last month's report looks great, I am very happy with
+                                        <div class="text-truncate">Last month's report looks great, I am very happy
+                                            with
                                             the progress so far, keep up the good work!</div>
                                         <div class="text-gray-500 small">Morgan Alvarez · 2d</div>
                                     </div>
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="mr-3 dropdown-list-image">
-                                        <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
-                                            alt="...">
+                                        <img class="rounded-circle"
+                                            src="https://source.unsplash.com/Mv9hjnEUHR4/60x60" alt="lista rozwijana">
                                         <div class="status-indicator bg-success"></div>
                                     </div>
                                     <div>
@@ -297,7 +304,8 @@
                                         <div class="text-gray-500 small">Chicken the Dog · 2w</div>
                                     </div>
                                 </a>
-                                <a class="text-center text-gray-500 dropdown-item small" href="#">Read More Messages</a>
+                                <a class="text-center text-gray-500 dropdown-item small" href="#">Read More
+                                    Messages</a>
                             </div>
                         </li>
 
@@ -308,8 +316,7 @@
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 text-gray-600 d-none d-lg-inline small">Zalogowany użytkownik</span>
-                                <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                <img class="img-profile rounded-circle" src="/img/undraw_profile.svg" alt="user">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="shadow dropdown-menu dropdown-menu-right animated--grow-in"
@@ -327,7 +334,8 @@
                                     Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
+                                <a class="dropdown-item" href="#" data-toggle="modal"
+                                    data-target="#logoutModal">
                                     <i class="mr-2 text-gray-400 fas fa-sign-out-alt fa-sm fa-fw"></i>
                                     Logout
                                 </a>
@@ -346,96 +354,98 @@
                     <div class="mb-4 d-sm-flex align-items-center justify-content-between">
                         <h1 class="mb-0 text-gray-800 h3">Witaj na stronie z kotkami i filmami :&#41; </h1>
                         <a href="#" class="shadow-sm d-none d-sm-inline-block btn btn-sm btn-primary">
-                        <strong>DATA: {{ date('d-m-y') }} </strong></a>
+                            <strong>DATA: {{ date('d-m-y') }} </strong></a>
                     </div>
 
-            @yield('content')
+                    @yield('content')
 
-            <div class="row">
-                <!-- Project Card Example -->
-                <div class="mb-4 shadow card">
-                    <div class="py-3 card-header">
-                        <h6 class="m-0 font-weight-bold text-primary">Kotek dnia</h6>
+                    <div class="row">
+                        <!-- Project Card Example -->
+                        <div class="mb-4 shadow card">
+                            <div class="py-3 card-header">
+                                <h6 class="m-0 font-weight-bold text-primary">Kotek dnia</h6>
+                            </div>
+                            <div class="card-body">
+                                <div class="text-center">
+                                    <img class="px-3 mt-3 mb-4 img-fluid px-sm-4" style="width: 25rem;"
+                                        src="{{ $catImageUrl }}" alt="Kotek dnia">
+
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <!-- Illustrations -->
+                        <div class="mb-4 shadow card">
+                            <div class="py-3 card-header">
+                                <h6 class="m-0 font-weight-bold text-primary">Ciekawe fakty</h6>
+                            </div>
+                            <div class="card-body">
+                                <p>Pobieranie z api ciekawostek</p>
+                            </div>
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <div class="text-center">
-                        <img class="px-3 mt-3 mb-4 img-fluid px-sm-4" style="width: 25rem;" src="{{ $catImageUrl }}" alt="Kotek dnia">
-                            
+
+                    <!-- Footer -->
+                    <footer class="bg-white sticky-footer">
+                        <div class="container my-auto">
+                            <div class="my-auto text-center copyright">
+                                <span>Praca zespołowa studentów CW 2025<span>
+                            </div>
+                        </div>
+                    </footer>
+                    <!-- End of Footer -->
+
+                </div>
+                <!-- End of Content Wrapper -->
+
+            </div>
+            <!-- End of Page Wrapper -->
+
+            <!-- Scroll to Top Button-->
+            <a class="rounded scroll-to-top" href="#page-top">
+                <i class="fas fa-angle-up"></i>
+            </a>
+
+            <!-- Logout Modal-->
+            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
+                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">Select "Logout" below if you are ready to end your current session.
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                            <a class="btn btn-primary" href="login.html">Logout</a>
                         </div>
                     </div>
                 </div>
-               
-               
-                <!-- Illustrations -->
-               <div class="mb-4 shadow card">
-                   <div class="py-3 card-header">
-                       <h6 class="m-0 font-weight-bold text-primary">Ciekawe fakty</h6>
-                   </div>
-                   <div class="card-body">
-                        <p>Pobieranie z api ciekawostek</p>
-                   </div>
-                </div>
-               </div>
-
-            <!-- Footer -->
-            <footer class="bg-white sticky-footer">
-                <div class="container my-auto">
-                    <div class="my-auto text-center copyright">
-                        <span>Praca zespołowa studentów CW 2025<span>
-                    </div>
-                </div>
-            </footer>
-            <!-- End of Footer -->
-
-        </div>
-        <!-- End of Content Wrapper -->
-
-    </div>
-    <!-- End of Page Wrapper -->
-
-    <!-- Scroll to Top Button-->
-    <a class="rounded scroll-to-top" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-
-    <!-- Logout Modal-->
-    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">×</span>
-                    </button>
-                </div>
-                <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                <div class="modal-footer">
-                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="login.html">Logout</a>
-                </div>
             </div>
-        </div>
-    </div>
 
-    <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+            <!-- Bootstrap core JavaScript-->
+            <script src="/vendor/jquery/jquery.min.js"></script>
+            <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-    <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+            <!-- Core plugin JavaScript-->
+            <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-    <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+            <!-- Custom scripts for all pages-->
+            <script src="/js/sb-admin-2.min.js"></script>
 
-    <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
+            <!-- Page level plugins -->
+            <script src="/vendor/chart.js/Chart.min.js"></script>
 
-    <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
+            <!-- Page level custom scripts -->
+            <script src="/js/demo/chart-area-demo.js"></script>
+            <script src="/js/demo/chart-pie-demo.js"></script>
 
-    <script src="{{ asset('js/data.js') }}"></script>
+            <script src="/js/data.js'></script>
 </body>
 
 </html>

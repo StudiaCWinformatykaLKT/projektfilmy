@@ -18,3 +18,5 @@ Route::get('/', [MainController::class, 'getCatImage'])->name('cat.image');
 
 Route::get('/search', [MainController::class, 'search'])->name('movies.search');
 Route::get('/movies/{id}', [MovieController::class, 'show'])->name('movies.show');
+
+Route::post('/movies/add-to-local', [\App\Http\Controllers\MovieController::class, 'addToLocal'])->name('movies.addToLocal');

@@ -27,31 +27,40 @@ class DatabaseSeeder extends Seeder
             ['rodzaj' => 'Akcja'],
         ]);
 
-        // Przykładowe dane dla tabeli bazfilmow
-        DB::table('bazfilmow')->insert([
+        DB::table('bazfilmowwew')->insert([
             [
-                'name' => 'Film 1',
-                'gatunek' => 1,
-                'srednia' => 7.5,
-                'ocena' => 8,
-                'dodanoprzez' => 'User 1',
-                'rokpremiery' => 2020,
-                'komentarz' => 'Dobry film',
-                'image' => 'film1.jpg',
-                'created_at' => '2025-03-15',
-                'updated_at' => '2025-03-15',
+                'adult' => false,
+                'backdrop_path' => '/path/to/backdrop.jpg',
+                'original_language' => 'en',
+                'original_title' => 'Original Title 1',
+                'overview' => 'Overview of film 1',
+                'popularity' => 10.0,
+                'poster_path' => '/path/to/poster1.jpg',
+                'release_date' => '2025-03-15',
+                'title' => 'Film 1',
+                'video' => false,
+                'vote_average' => 8.5,
+                'vote_count' => 100,
+                'genre_ids' => json_encode([1, 2]),
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
-                'name' => 'Film 2',
-                'gatunek_id' => 2,
-                'srednia' => 6.5,
-                'ocena' => 7,
-                'dodanoprzez' => 'User 2',
-                'rokpremiery' => 2019,
-                'komentarz' => 'Średni film',
-                'image' => 'film2.jpg',
-                'created_at' => '2025-03-15',
-                'updated_at' => '2025-03-15',
+                'adult' => false,
+                'backdrop_path' => '/path/to/backdrop2.jpg',
+                'original_language' => 'en',
+                'original_title' => 'Original Title 2',
+                'overview' => 'Overview of film 2',
+                'popularity' => 20.0,
+                'poster_path' => '/path/to/poster2.jpg',
+                'release_date' => '2025-03-16',
+                'title' => 'Film 2',
+                'video' => false,
+                'vote_average' => 7.5,
+                'vote_count' => 200,
+                'genre_ids' => json_encode([2, 3]),
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
         ]);
 
@@ -68,5 +77,6 @@ class DatabaseSeeder extends Seeder
                 'url' => 'https://example.com/kot2.jpg',
             ],
         ]);
+
     }
 }

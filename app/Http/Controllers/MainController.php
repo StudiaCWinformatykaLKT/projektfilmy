@@ -17,21 +17,53 @@ class MainController extends Controller
         return view('cat', compact('cats', 'catImageUrl'));
     }
 
-    // Wyświetlanie filmów
 public function films()
 {
-    $films = DB::table('bazfilmow')->get();
-    $movies = collect($films)->map(function ($film) {
-        return [
-            'id' => $film->id,
-            'title' => $film->tytul,
-            'rokpremiery' => $film->rok_premiery,
+    // Pobieranie filmów z tabeli bazfilmow i mapowanie do obiektów
+    $movies = DB::table('bazfilmow')->get()->map(function ($film) {
+        return (object)[
+            'id' => $film->id ?? null,
+            'title' => $film->title ?? 'Brak tytułu',
+            'release_year' => isset($film->release_date) && $film->release_date ? substr($film->release_date, 0, 4) : 'brak danych',
+            'genre_ids' => $film->genre_ids ?? '',
+            'vote_average' => $film->vote_average ?? '',
+            'vote_count' => $film->vote_count ?? '',
+            'original_language' => $film->original_language ?? '',
+            'overview' => $film->overview ?? '',
+            'poster_path' => $film->poster_path ?? '',
             'source' => 'local',
         ];
     });
+
+    // Pobieranie filmów z tabeli bazfilmowwew jako kolekcję obiektów
+    $moviesWew = DB::table('bazfilmowwew')->get()->map(function ($movie) {
+        return (object)[
+            'id' => $movie->id ?? null,
+            'title' => $movie->title ?? 'Brak tytułu',
+            'release_year' => isset($movie->release_date) && $movie->release_date ? substr($movie->release_date, 0, 4) : 'brak danych',
+            'genre_ids' => $movie->genre_ids ?? '',
+            'vote_average' => $movie->vote_average ?? '',
+            'vote_count' => $movie->vote_count ?? '',
+            'original_language' => $movie->original_language ?? '',
+            'overview' => $movie->overview ?? '',
+            'poster_path' => $movie->poster_path ?? '',
+            'source' => 'wew',
+            'release_date' => $movie->release_date ?? '',
+        ];
+    });
+
+    // Logowanie danych do debugowania (można usunąć w produkcji)
+    Log::debug('Filmy z bazfilmow:', ['count' => $movies->count()]);
+    Log::debug('Filmy z bazfilmowwew:', ['count' => $moviesWew->count()]);
+
     $catImageUrl = $this->getCatImageUrl();
-    return view('films', compact('movies', 'catImageUrl'));
-    }
+    
+    return view('films', [
+        'movies' => $movies,
+        'moviesWew' => $moviesWew,
+        'catImageUrl' => $catImageUrl
+    ]);
+}
 
     // Wyświetlanie użytkowników
     public function user()
@@ -53,7 +85,7 @@ public function films()
         ]);
 
         // Dodaj to logowanie:
-        Log::info('Odpowiedź z TMDB:', ['response' => $response->json()]);
+        //Log::info('Odpowiedź z TMDB:', ['response' => $response->json()]);
 
         $movies = $response->json();
 
@@ -71,7 +103,27 @@ public function films()
     }
 
     $catImageUrl = $this->getCatImageUrl();
-    return view('films', compact('movies', 'catImageUrl'));
+    Log::info('Dostęp do danych testowy:', [
+    'database' => DB::connection()->getDatabaseName(),
+    'tables' => DB::select('SHOW TABLES'),
+    'bazfilmowwew' => DB::table('bazfilmowwew')->get(),
+]);
+$moviesWew = DB::table('bazfilmowwew')->get()->map(function ($movie) {
+    return (object)[
+        'id' => $movie->id ?? null,
+        'title' => $movie->title ?? 'Brak tytułu',
+        'release_year' => isset($movie->release_date) && $movie->release_date ? substr($movie->release_date, 0, 4) : 'brak danych',
+        'genre_ids' => $movie->genre_ids ?? '',
+        'vote_average' => $movie->vote_average ?? '',
+        'vote_count' => $movie->vote_count ?? '',
+        'original_language' => $movie->original_language ?? '',
+        'overview' => $movie->overview ?? '',
+        'poster_path' => $movie->poster_path ?? '',
+        'source' => 'wew',
+        'release_date' => $movie->release_date ?? '',
+    ];
+});
+return view('films', compact('movies', 'catImageUrl', 'moviesWew'));
     }
 
     // Wyświetlanie losowego kota w layoucie
@@ -81,10 +133,6 @@ public function films()
         return view('layouts.lay', compact('catImageUrl'));
     }
 
-    /**
-     * Helper function: Pobiera URL kota dnia z bazy danych lub API.
-     */
-
     public function getCatImageUrl()
     {
         $today = now()->toDateString();
@@ -93,11 +141,9 @@ public function films()
         if ($catOfTheDay) {
             return $catOfTheDay->url;
         } else {
-            // Pobierz nowy obrazek z API
             $response = Http::get('https://cataas.com/cat?type=medium&position=center&json=true');
             $data = $response->json();
             $newUrl = $data['url'];
-            // Dodaj nowy wpis do tabeli `kotdnia`
             DB::table('kotdnia')->insert([
                 'created_at' => $today,
                 'url' => $newUrl,
