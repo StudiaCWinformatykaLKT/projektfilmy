@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-
+@if (session('success'))
+    <div class="alert alert-success text-center">{{ session('success') }}</div>
+@endif
+@if (session('user'))
+    <div class="text-center text-success">Zalogowany jako: {{ session('user')->name }}</div>
+@endif
 
 <head>
 
@@ -260,7 +265,8 @@
                                 </h6>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="mr-3 dropdown-list-image">
-                                        <img class="rounded-circle" src="img/undraw_profile_1.svg" alt="lista rozwijana">
+                                        <img class="rounded-circle" src="img/undraw_profile_1.svg"
+                                            alt="lista rozwijana">
                                         <div class="status-indicator bg-success"></div>
                                     </div>
                                     <div class="font-weight-bold">
@@ -271,7 +277,8 @@
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="mr-3 dropdown-list-image">
-                                        <img class="rounded-circle" src="img/undraw_profile_2.svg" alt="lista rozwijana">
+                                        <img class="rounded-circle" src="img/undraw_profile_2.svg"
+                                            alt="lista rozwijana">
                                         <div class="status-indicator"></div>
                                     </div>
                                     <div>
@@ -282,7 +289,8 @@
                                 </a>
                                 <a class="dropdown-item d-flex align-items-center" href="#">
                                     <div class="mr-3 dropdown-list-image">
-                                        <img class="rounded-circle" src="img/undraw_profile_3.svg" alt="lista rozwijana">
+                                        <img class="rounded-circle" src="img/undraw_profile_3.svg"
+                                            alt="lista rozwijana">
                                         <div class="status-indicator bg-warning"></div>
                                     </div>
                                     <div>
@@ -315,8 +323,22 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 text-gray-600 d-none d-lg-inline small">Zalogowany użytkownik</span>
-                                <img class="img-profile rounded-circle" src="/img/undraw_profile.svg" alt="user">
+                                @if (session('user'))
+                                    <span class="mr-2 text-gray-600 d-none d-lg-inline small">
+                                        Zalogowany jako: {{ session('user')->name }}
+                                    </span>
+                                    <img class="img-profile rounded-circle" src="/img/undraw_profile.svg"
+                                        alt="user">
+                                    <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                                        @csrf
+                                        <button type="submit" class="dropdown-item"
+                                            style="display:inline; background:none; border:none; color:#858796;">
+                                            <i class="mr-2 text-gray-400 fas fa-sign-out-alt fa-sm fa-fw"></i> Wyloguj
+                                        </button>
+                                    </form>
+                                @else
+                                    <a href="{{ url('login') }}" class="dropdown-item">Zaloguj</a>
+                                @endif
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="shadow dropdown-menu dropdown-menu-right animated--grow-in"
