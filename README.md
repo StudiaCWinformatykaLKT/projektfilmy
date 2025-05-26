@@ -22,34 +22,40 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
 ----------------------------------------------------------------------------------------------------
-
 # Projekt Filmy
+
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 ## Opis projektu
 
 Projekt Filmy to aplikacja webowa stworzona w Laravel, która umożliwia wyszukiwanie filmów za pomocą TMDB API oraz zarządzanie użytkownikami i filmami w bazie danych.
 
+---
+
 ## Wymagania
 
-- PHP >= 7.4
-- Composer
+- PHP >= 7.4 (jeśli uruchamiasz lokalnie)
+- Composer (jeśli uruchamiasz lokalnie)
 - MySQL lub inna kompatybilna baza danych
-- Klucz API TMDB
+- Klucz API TMDB https://developer.themoviedb.org/docs/getting-started
+- Docker i Docker Compose (jeśli uruchamiasz w kontenerze)
 
-## Instalacja
+---
 
-1. Sklonuj repozytorium na swoją stację roboczą:
+## Instalacja lokalna (bez Dockera)
+
+1. Sklonuj repozytorium:
     ```sh
     git clone https://github.com/StudiaCWinformatykaLKT/projektfilmy.git
     cd projektfilmy
     ```
 
-2. Zainstaluj zależności za pomocą Composera:
+2. Zainstaluj zależności:
     ```sh
     composer install
     ```
 
-3. Skopiuj plik `.env.example` do `.env` i zaktualizuj go o swoje ustawienia bazy danych i klucz API TMDB:
+3. Skopiuj plik `.env.example` do `.env` i zaktualizuj ustawienia bazy danych oraz klucz TMDB:
     ```sh
     cp .env.example .env
     ```
@@ -59,12 +65,12 @@ Projekt Filmy to aplikacja webowa stworzona w Laravel, która umożliwia wyszuki
     php artisan key:generate
     ```
 
-5. Uruchom migracje bazy danych:
+5. Uruchom migracje:
     ```sh
     php artisan migrate
     ```
 
-6. Uruchom seedery, aby wypełnić bazę danych przykładowymi danymi:
+6. (Opcjonalnie) Uruchom seedery:
     ```sh
     php artisan db:seed
     ```
@@ -74,13 +80,68 @@ Projekt Filmy to aplikacja webowa stworzona w Laravel, która umożliwia wyszuki
     php artisan serve
     ```
 
-8. Otwórz przeglądarkę i przejdź do `http://localhost:8000`, aby zobaczyć działającą aplikację.
+8. Otwórz przeglądarkę i przejdź do `http://localhost:8000`.
+
+---
+
+## Uruchamianie w Dockerze
+
+1. **Upewnij się, że masz zainstalowane Docker i Docker Compose.**
+
+2. **W głównym katalogu projektu powinny znajdować się pliki:**
+    - `Dockerfile`
+    - `docker-compose.yml`
+    - katalog `docker/` z plikiem `vhost.conf`
+
+3. **Skonfiguruj plik `.env`**  
+   Ustaw w nim:
+    ```
+    DB_CONNECTION=mysql
+    DB_HOST=db
+    DB_PORT=3306
+    DB_DATABASE=laravel
+    DB_USERNAME=laravel
+    DB_PASSWORD=laravel
+    ```
+
+4. **Uruchom kontenery:**
+    ```sh
+    docker-compose up --build
+    ```
+
+5. **Wejdź do kontenera aplikacji:**
+    ```sh
+    docker-compose exec app bash
+    ```
+
+6. **Zainstaluj zależności i uruchom migracje:**
+    ```sh
+    composer install
+    php artisan key:generate
+    php artisan migrate
+    ```
+
+7. **Aplikacja będzie dostępna pod adresem:**  
+   [http://localhost:8000](http://localhost:8000)
+
+---
 
 ## Użycie
 
 - Wyszukiwanie filmów: Wprowadź tytuł filmu w polu wyszukiwania na górnym pasku nawigacyjnym i naciśnij przycisk wyszukiwania.
 - Zarządzanie użytkownikami: Przejdź do sekcji użytkowników, aby zobaczyć listę zarejestrowanych użytkowników.
 
+---
+
+## Dokumentacja Laravel
+
+Laravel posiada rozbudowaną [dokumentację](https://laravel.com/docs) oraz [Laravel Bootcamp](https://bootcamp.laravel.com).
+
+---
+
+## Licencja
+
+Projekt korzysta z licencji [MIT](https://opensource.org/licenses/MIT).
 
 ----------------------------------------------------------------------------------------------
 
