@@ -127,12 +127,11 @@ return view('films', compact('movies', 'catImageUrl', 'moviesWew'));
     }
 
     // Wyświetlanie losowego kota w layoucie
-    public function getCatImage()
-    {
-        $catImageUrl = $this->getCatImageUrl();
-        return view('layouts.lay', compact('catImageUrl'));
-    }
-
+public function getCatImage()
+{
+    $catImageUrl = $this->getCatImageUrl(); // zakładam, że to zwraca URL obrazka kota
+    return view('index', compact('catImageUrl'));
+}
     public function getCatImageUrl()
     {
         $today = now()->toDateString();

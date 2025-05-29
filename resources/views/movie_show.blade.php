@@ -1,6 +1,7 @@
 @extends('layouts.lay')
 
 @section('content')
+<div class="mb-4 shadow card">
     <div class="container mt-4">
         <h2>{{ $movie['title'] ?? ($movie->title ?? 'Brak tytułu') }}</h2>
         <p><strong>Rok premiery:</strong> {{ $movie['release_date'] ?? ($movie->release_date ?? 'brak danych') }}</p>
@@ -15,7 +16,9 @@
         <form action="{{ route('movies.addToLocal') }}" method="POST" style="display:inline;">
             @csrf
             <input type="hidden" name="movie" value="{{ htmlentities(json_encode($movie)) }}">
-            <button type="submit" class="btn btn-success">Dodaj film do bazy</button>
+            <br><br>
+            <button type="submit" class="btn btn-success" style="padding:10px; margin-left:20px;">Dodaj film do bazy</button>
         </form><br><br>
     @endif
+    </div>
 @endsection

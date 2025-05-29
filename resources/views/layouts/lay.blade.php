@@ -54,6 +54,11 @@
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Strona główna</span></a>
             </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="/doc/dokumentacja.pdf" target="_blank">
+                    
+                    <span>Dokumentacja PDF</span></a>
+            </li>
 
             <!-- Divider -->
             <hr class="sidebar-divider">
@@ -195,7 +200,7 @@
                                 </form>
                             </div>
                         </li>
-
+                        {{-- 
                         <!-- Nav Item - Alerts -->
                         <li class="mx-1 nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
@@ -316,13 +321,12 @@
                                     Messages</a>
                             </div>
                         </li>
-
+                        --}}
                         <div class="topbar-divider d-none d-sm-block"></div>
 
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
-                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
                                 @if (session('user'))
                                     <span class="mr-2 text-gray-600 d-none d-lg-inline small">
                                         Zalogowany jako: {{ session('user')->name }}
@@ -337,9 +341,14 @@
                                         </button>
                                     </form>
                                 @else
-                                    <a href="{{ url('login') }}" class="dropdown-item">Zaloguj</a>
+                                    <a class="nav-link dropdown-toggle" href="{{ url('login') }}"
+                                        id="loginDropdown" role="button" aria-haspopup="true"
+                                        aria-expanded="false">
+                                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">Zaloguj</span>
+                                        <img class="img-profile rounded-circle" src="/img/undraw_profile.svg">
+                                    </a>
                                 @endif
-                            </a>
+                            
                             <!-- Dropdown - User Information -->
                             <div class="shadow dropdown-menu dropdown-menu-right animated--grow-in"
                                 aria-labelledby="userDropdown">
@@ -396,8 +405,8 @@
                             </div>
                         </div>
 
-
-                        <!-- Illustrations -->
+                        <!-- Pole na ciekawotki o kotach brak API !!!S -->
+                        <!-- Illustrations
                         <div class="mb-4 shadow card">
                             <div class="py-3 card-header">
                                 <h6 class="m-0 font-weight-bold text-primary">Ciekawe fakty</h6>
@@ -405,7 +414,7 @@
                             <div class="card-body">
                                 <p>Pobieranie z api ciekawostek</p>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
 
                     <!-- Footer -->

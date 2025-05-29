@@ -37,7 +37,7 @@ Projekt Filmy to aplikacja webowa stworzona w Laravel, która umożliwia wyszuki
 - PHP >= 7.4 (jeśli uruchamiasz lokalnie)
 - Composer (jeśli uruchamiasz lokalnie)
 - MySQL lub inna kompatybilna baza danych
-- Klucz API TMDB https://developer.themoviedb.org/docs/getting-started
+- Klucz API TMDB https://developer.themoviedb.org/docs/getting-started (należy dopisać go w pliku .env za TMDB_API_KEY=)
 - Docker i Docker Compose (jeśli uruchamiasz w kontenerze)
 
 ---
@@ -81,6 +81,16 @@ Projekt Filmy to aplikacja webowa stworzona w Laravel, która umożliwia wyszuki
     ```
 
 8. Otwórz przeglądarkę i przejdź do `http://localhost:8000`.
+
+9. Konfiguracja pliku .env
+    ```sh
+    DB_CONNECTION=mysql
+    DB_HOST=localhost
+    DB_PORT=3306
+    DB_DATABASE=laravel
+    DB_USERNAME=root
+    DB_PASSWORD=
+    ```
 
 ---
 
