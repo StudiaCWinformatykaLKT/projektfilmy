@@ -62,7 +62,12 @@
                                 @endif
                                 @foreach ($moviesWew as $movie)
                                     <tr>
-                                        <td>{{ $movie->title ?? '' }}</td>
+                                        <td>
+                                            <a
+                                                href="{{ route('movies.show', ['id' => $movie->id, 'source' => $movie->source ?? 'wew']) }}">
+                                                {{ $movie->title ?? '' }}
+                                            </a>
+                                        </td>
                                         <td>
                                             @if (is_array($movie->genre_ids))
                                                 {{ implode(', ', $movie->genre_ids) }}

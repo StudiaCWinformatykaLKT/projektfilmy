@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use App\Models\Bazfilmowwew;
 
 class MainController extends Controller
 {
@@ -53,8 +54,8 @@ public function films()
     });
 
     // Logowanie danych do debugowania (można usunąć w produkcji)
-    Log::debug('Filmy z bazfilmow:', ['count' => $movies->count()]);
-    Log::debug('Filmy z bazfilmowwew:', ['count' => $moviesWew->count()]);
+    //Log::debug('Filmy z bazfilmow:', ['count' => $movies->count()]);
+    //Log::debug('Filmy z bazfilmowwew:', ['count' => $moviesWew->count()]);
 
     $catImageUrl = $this->getCatImageUrl();
     
@@ -84,7 +85,6 @@ public function films()
             'query' => $query,
         ]);
 
-        // Dodaj to logowanie:
         //Log::info('Odpowiedź z TMDB:', ['response' => $response->json()]);
 
         $movies = $response->json();
@@ -126,11 +126,17 @@ $moviesWew = DB::table('bazfilmowwew')->get()->map(function ($movie) {
 return view('films', compact('movies', 'catImageUrl', 'moviesWew'));
     }
 
-    // Wyświetlanie losowego kota w layoucie
+
 public function getCatImage()
 {
-    $catImageUrl = $this->getCatImageUrl(); // zakładam, że to zwraca URL obrazka kota
-    return view('index', compact('catImageUrl'));
+    $catImageUrl = $this->getCatImageUrl();
+    $randomMovie = Bazfilmowwew::inRandomOrder()->first();
+    $localMoviesCount = Bazfilmowwew::count();
+    return view('index', [
+        'catImageUrl' => $catImageUrl,
+        'randomMovie' => $randomMovie,
+        'localMoviesCount' => $localMoviesCount,          
+    ]);
 }
     public function getCatImageUrl()
     {

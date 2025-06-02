@@ -9,6 +9,7 @@ use App\Http\Controllers\RegController;
 
 
 
+
 Route::get('/cat', [MainController::class, 'cat'])->name('cat');
 Route::get('/films', [MainController::class, 'films'])->name('films');
 Route::get('/user', [MainController::class, 'user'])->name('user');
