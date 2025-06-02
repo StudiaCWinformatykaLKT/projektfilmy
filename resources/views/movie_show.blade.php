@@ -14,12 +14,23 @@
 
 
         @if ($source === 'api')
+            @if ($movieExistsInLocalDb)
+                <div class="alert alert-info" style="margin: 20px;">
+                    Ten film już istnieje w Twojej lokalnej bazie danych. Kliknięcie przycisku poniżej zaktualizuje jego
+                    dane.
+                </div>
+            @else
+                <div class="alert alert-light" style="margin: 20px;">
+                    Możesz dodać ten film do swojej lokalnej bazy danych.
+                </div>
+            @endif
             <form action="{{ route('movies.addToLocal') }}" method="POST" style="display:inline;">
                 @csrf
                 <input type="hidden" name="movie" value="{{ htmlentities(json_encode((array) $movie)) }}">
                 <br><br>
-                <button type="submit" class="btn btn-success" style="padding:10px; margin-left:20px;">Dodaj film do
-                    bazy</button>
+                <button type="submit" class="btn btn-{{ $movieExistsInLocalDb ? 'warning' : 'success' }}"
+                    style="padding:10px; margin-left:20px;">
+                    {{ $movieExistsInLocalDb ? 'Aktualizuj film w bazie' : 'Dodaj film do bazy' }}</button>
             </form><br><br>
         @endif
     </div>

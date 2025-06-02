@@ -48,7 +48,7 @@ public function films()
             'original_language' => $movie->original_language ?? '',
             'overview' => $movie->overview ?? '',
             'poster_path' => $movie->poster_path ?? '',
-            'source' => 'wew',
+            'source' => 'local',
             'release_date' => $movie->release_date ?? '',
         ];
     });
@@ -119,7 +119,7 @@ $moviesWew = DB::table('bazfilmowwew')->get()->map(function ($movie) {
         'original_language' => $movie->original_language ?? '',
         'overview' => $movie->overview ?? '',
         'poster_path' => $movie->poster_path ?? '',
-        'source' => 'wew',
+        'source' => 'local',
         'release_date' => $movie->release_date ?? '',
     ];
 });

@@ -99,7 +99,6 @@
                         <a class="collapse-item" href="{{ route('user') }}">USER</a>
                         <a class="collapse-item" href="{{ route('films') }}">FILMS</a>
                         <a class="collapse-item" href="{{ route('cat') }}">CAT</a>
-                        <a class="collapse-item" href="">Other</a>
                     </div>
                 </div>
             </li>

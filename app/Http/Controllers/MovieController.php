@@ -83,17 +83,22 @@ public function show(Request $request, $id)
 {
     $source = $request->query('source', 'local');
     if ($source === 'local') {
-        $movie = DB::table('bazfilmowwew')->where('id', $id)->first();
+        $movie = DB::table('bazfilmowwew')->where('id', $id)->first(); 
+        $movieExistsInLocalDb = true;
     } else {
         $apiKey = env('TMDB_API_KEY');
         $response = Http::get("https://api.themoviedb.org/3/movie/{$id}", [
             'api_key' => $apiKey,
         ]);
         $movie = $response->json();
+        $movieExistsInLocalDb = false;
+        if (isset($movie['id'])) {
+            $movieExistsInLocalDb = DB::table('bazfilmowwew')->where('tmdb_id', $movie['id'])->exists();
+        }
     }
     $catImageUrl = app(\App\Http\Controllers\MainController::class)->getCatImageUrl();
     $moviesWew = DB::table('bazfilmowwew')->get();
-    return view('movie_show', compact('movie', 'source', 'moviesWew', 'catImageUrl'));
+    return view('movie_show', compact('movie', 'source', 'moviesWew', 'catImageUrl', 'movieExistsInLocalDb'));
 }
 
     private function getCatImageUrl()
