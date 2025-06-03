@@ -2,8 +2,9 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
-
+use Inertia\Inertia;
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -19,6 +20,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Inertia::share([
+            'auth.user' => fn () => auth()->user(),
+        ]);
     }
 }

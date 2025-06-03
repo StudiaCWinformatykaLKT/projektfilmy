@@ -4,7 +4,7 @@
     <div class="alert alert-success text-center">{{ session('success') }}</div>
 @endif
 @if (session('user'))
-    <div class="text-center text-success">Zalogowany jako: {{ session('user')->name }}</div>
+    <div class="text-center text-success">Zalogowany jako: {{ Auth::user()->name }}</div>
 @endif
 
 <head>
@@ -56,7 +56,7 @@
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="/doc/dokumentacja.pdf" target="_blank">
-                    
+
                     <span>Dokumentacja PDF</span></a>
             </li>
 
@@ -199,7 +199,7 @@
                                 </form>
                             </div>
                         </li>
-                        {{-- 
+                        {{--
                         <!-- Nav Item - Alerts -->
                         <li class="mx-1 nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
@@ -328,7 +328,7 @@
 
                                 @if (session('user'))
                                     <span class="mr-2 text-gray-600 d-none d-lg-inline small">
-                                        Zalogowany jako: {{ session('user')->name }}
+                                        Zalogowany jako: {{ Auth::user()->name }}
                                     </span>
                                     <img class="img-profile rounded-circle" src="/img/undraw_profile.svg"
                                         alt="user">
@@ -347,7 +347,7 @@
                                         <img class="img-profile rounded-circle" src="/img/undraw_profile.svg">
                                     </a>
                                 @endif
-                            
+
                             <!-- Dropdown - User Information -->
                             <div class="shadow dropdown-menu dropdown-menu-right animated--grow-in"
                                 aria-labelledby="userDropdown">
@@ -420,7 +420,7 @@
                     <footer class="bg-white sticky-footer">
                         <div class="container my-auto">
                             <div class="my-auto text-center copyright">
-                                <span>Praca zespołowa studentów CW 2025<span>
+                                <span>Praca zespołowa studentów CW 2025</span>
                             </div>
                         </div>
                     </footer>
@@ -475,7 +475,9 @@
             <script src="/js/demo/chart-area-demo.js"></script>
             <script src="/js/demo/chart-pie-demo.js"></script>
 
-            <script src="/js/data.js'></script>
+            <script src="/js/data.js"></script>
+        </div>
+    </div>
 </body>
 
 </html>
