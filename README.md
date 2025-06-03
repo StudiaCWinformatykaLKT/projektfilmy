@@ -92,6 +92,13 @@ Projekt Filmy to aplikacja webowa stworzona w Laravel, która umożliwia wyszuki
     DB_PASSWORD=
     ```
 
+```sh
+Uwaga
+Aby aplikacja działała poprawnie na maszynie lokalnej, wymagane jest środowisko serwerowe. Jednym z popularnych rozwiązań jest XAMPP, który dostarcza niezbędne komponenty, takie jak Apache, PHP i MySQL.
+
+🔗 Oficjalna strona XAMPP:
+https://www.apachefriends.org/pl/index.html
+```
 ---
 
 ## Uruchamianie w Dockerze

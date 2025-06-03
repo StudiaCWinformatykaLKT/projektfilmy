@@ -41,4 +41,46 @@
             </div>
         </div>
     </div>
+        <!-- Tabela Ulubionych Filmów Użytkowników -->
+    <div class="mb-4 shadow card">
+        <div class="py-3 card-header">
+            <h6 class="m-0 font-weight-bold text-primary">Tabela Ulubionych Filmów (fav_user_movie)</h6>
+        </div>
+        <div class="card-body">
+            <div class="card shadow mb-4">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="favMoviesTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>ID Wpisu</th>
+                                    <th>Nazwa Użytkownika</th>
+                                    <th>Tytuł Filmu</th>
+                                    <th>Ocena</th>
+                                    <th>Data Dodania</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @if(isset($favUserMovies) && $favUserMovies->count() > 0)
+                                    @foreach ($favUserMovies as $fav)
+                                        <tr>
+                                            <td>{{ $fav->fav_id }}</td>
+                                            <td>{{ $fav->user_name }}</td>
+                                            <td>{{ $fav->movie_title }}</td>
+                                            <td>{{ $fav->rating ?? 'Brak oceny' }}</td>
+                                            <td>{{ $fav->fav_created_at }}</td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="5" class="text-center">Brak danych o ulubionych filmach.</td>
+                                    </tr>
+                                @endif
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection

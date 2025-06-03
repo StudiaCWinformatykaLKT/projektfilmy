@@ -16,10 +16,14 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        User::firstOrCreate(
+            ['email' => 'test@example.com'], // Warunek wyszukiwania
+            ['name' => 'Test User',        
+            'password' => bcrypt('password'), 
+        ]); 
+        // Dodaj kilku dodatkowych użytkowników
+        User::factory()->count(3)->create();
+
          // Przykładowe dane dla tabeli gatunek
          DB::table('gatunek')->insert([
             ['rodzaj' => 'Komedia'],
@@ -187,7 +191,6 @@ DB::table('bazfilmowwew')->insert([
 ]);
 
 
-        // Przykładowe dane dla tabeli kotdnia
         DB::table('kotdnia')->insert([
             [
                 'created_at' => '2025-03-15',
@@ -199,6 +202,10 @@ DB::table('bazfilmowwew')->insert([
                 'updated_at' => '2025-03-16',
                 'url' => 'https://example.com/kot2.jpg',
             ],
+        ]);
+
+         $this->call([
+            FavUserMovieSeeder::class,
         ]);
 
     }

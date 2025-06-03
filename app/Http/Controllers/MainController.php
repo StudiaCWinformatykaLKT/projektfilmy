@@ -71,7 +71,20 @@ public function films()
     {
         $users = DB::table('users')->get();
         $catImageUrl = $this->getCatImageUrl();
-        return view('user', compact('users', 'catImageUrl'));
+        $favUserMovies = DB::table('fav_user_movie')
+            ->join('users', 'fav_user_movie.user_id', '=', 'users.id')
+            ->join('bazfilmowwew', 'fav_user_movie.movie_id', '=', 'bazfilmowwew.id')
+            ->select(
+                'fav_user_movie.id as fav_id',
+                'users.name as user_name',
+                'bazfilmowwew.title as movie_title',
+                'fav_user_movie.rating',
+                'fav_user_movie.created_at as fav_created_at'
+            )
+            ->orderBy('fav_user_movie.created_at', 'desc') // Opcjonalnie: sortuj wg daty dodania
+            ->get();
+
+        return view('user', compact('users', "catImageUrl", 'favUserMovies'));
     }
 
     // Wyszukiwanie filmów za pomocą API TMDB

@@ -18,8 +18,6 @@ public function search(Request $request)
         if (empty($query)) {
             return back()->with('error', 'Puste zapytanie');
         }
-
-        // Wyszukiwanie lokalne
         $localMovies = collect();
         try {
             $localMovies = DB::table('bazfilmow')
@@ -136,38 +134,42 @@ Log::info('Dane do zapisu:', $data);
     if (!$data) {
         return back()->with('error', 'Brak danych do zapisania!');
     }
-DB::table('bazfilmowwew')->insert([
-    'adult' => $data['adult'] ?? false,
-    'backdrop_path' => $data['backdrop_path'] ?? null,
-    'belongs_to_collection' => isset($data['belongs_to_collection']) ? json_encode($data['belongs_to_collection']) : null,
-    'budget' => $data['budget'] ?? null,
-    'genres' => isset($data['genres']) ? json_encode($data['genres']) : null,
-    'homepage' => $data['homepage'] ?? null,
-    'tmdb_id' => $data['id'] ?? null, // <-- to jest ID z TMDB!
-    'imdb_id' => $data['imdb_id'] ?? null,
-    'origin_country' => isset($data['origin_country']) ? json_encode($data['origin_country']) : null,
-    'original_language' => $data['original_language'] ?? null,
-    'original_title' => $data['original_title'] ?? null,
-    'overview' => $data['overview'] ?? null,
-    'popularity' => $data['popularity'] ?? null,
-    'poster_path' => $data['poster_path'] ?? null,
-    'production_companies' => isset($data['production_companies']) ? json_encode($data['production_companies']) : null,
-    'production_countries' => isset($data['production_countries']) ? json_encode($data['production_countries']) : null,
-    'release_date' => $data['release_date'] ?? null,
-    'revenue' => $data['revenue'] ?? null,
-    'runtime' => $data['runtime'] ?? null,
-    'spoken_languages' => isset($data['spoken_languages']) ? json_encode($data['spoken_languages']) : null,
-    'status' => $data['status'] ?? null,
-    'tagline' => $data['tagline'] ?? null,
-    'title' => $data['title'] ?? null,
-    'video' => $data['video'] ?? false,
-    'vote_average' => $data['vote_average'] ?? null,
-    'vote_count' => $data['vote_count'] ?? null,
-    'genre_ids' => isset($data['genre_ids']) ? json_encode($data['genre_ids']) : null,
-    'created_at' => now(),
-    'updated_at' => now(),
-    ]);
+    $movieData = [
+        'adult' => $data['adult'] ?? false,
+        'backdrop_path' => $data['backdrop_path'] ?? null,
+        'belongs_to_collection' => isset($data['belongs_to_collection']) ? json_encode($data['belongs_to_collection']) : null,
+        'budget' => $data['budget'] ?? null,
+        'genres' => isset($data['genres']) ? json_encode($data['genres']) : null,
+        'homepage' => $data['homepage'] ?? null,
+        'imdb_id' => $data['imdb_id'] ?? null,
+        'origin_country' => isset($data['origin_country']) ? json_encode($data['origin_country']) : null,
+        'original_language' => $data['original_language'] ?? null,
+        'original_title' => $data['original_title'] ?? null,
+        'overview' => $data['overview'] ?? null,
+        'popularity' => $data['popularity'] ?? null,
+        'poster_path' => $data['poster_path'] ?? null,
+        'production_companies' => isset($data['production_companies']) ? json_encode($data['production_companies']) : null,
+        'production_countries' => isset($data['production_countries']) ? json_encode($data['production_countries']) : null,
+        'release_date' => $data['release_date'] ?? null,
+        'revenue' => $data['revenue'] ?? null,
+        'runtime' => $data['runtime'] ?? null,
+        'spoken_languages' => isset($data['spoken_languages']) ? json_encode($data['spoken_languages']) : null,
+        'status' => $data['status'] ?? null,
+        'tagline' => $data['tagline'] ?? null,
+        'title' => $data['title'] ?? null,
+        'video' => $data['video'] ?? false,
+        'vote_average' => $data['vote_average'] ?? null,
+        'vote_count' => $data['vote_count'] ?? null,
+        'genre_ids' => isset($data['genre_ids']) ? json_encode($data['genre_ids']) : null,
+        'updated_at' => now(),
+    ];
 
-    return redirect()->back()->with('success', 'Film został dodany do bazy!');
+   
+    DB::table('bazfilmowwew')->updateOrInsert(
+        ['tmdb_id' => $data['id'] ?? null],
+        array_merge($movieData, ['created_at' => now()])
+    );
+
+    return redirect()->back()->with('success', 'Film został dodany/zaktualizowany w bazie!');
 }
 }

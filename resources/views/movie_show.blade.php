@@ -16,7 +16,7 @@
         @if ($source === 'api')
             @if ($movieExistsInLocalDb)
                 <div class="alert alert-info" style="margin: 20px;">
-                    Ten film już istnieje w Twojej lokalnej bazie danych. Kliknięcie przycisku poniżej zaktualizuje jego
+                    Ten film już istnieje w bazie danych Kitty movies. Kliknięcie przycisku poniżej zaktualizuje jego
                     dane.
                 </div>
             @else
@@ -31,7 +31,8 @@
                 <button type="submit" class="btn btn-{{ $movieExistsInLocalDb ? 'warning' : 'success' }}"
                     style="padding:10px; margin-left:20px;">
                     {{ $movieExistsInLocalDb ? 'Aktualizuj film w bazie' : 'Dodaj film do bazy' }}</button>
-            </form><br><br>
+            </form>
         @endif
+        <br><br>
     </div>
 @endsection
