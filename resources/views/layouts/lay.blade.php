@@ -1,14 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 @if (session('success'))
-    <div class="alert alert-success text-center">{{ session('success') }}</div>
-@endif
-@if (session('user'))
-    <div class="text-center text-success">Zalogowany jako: {{ session('user')->name }}</div>
+    <script>
+        alert("{{ session('success') }}");
+    </script>
 @endif
 
 <head>
-
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -56,8 +54,12 @@
             </li>
             <li class="nav-item active">
                 <a class="nav-link" href="/doc/dokumentacja.pdf" target="_blank">
-                    
+
                     <span>Dokumentacja PDF</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="{{ url('/profil') }}">
+                    <span>Strona użytkownika</span></a>
             </li>
 
             <!-- Divider -->
@@ -326,12 +328,15 @@
                         <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
 
-                                @if (session('user'))
-                                    <span class="mr-2 text-gray-600 d-none d-lg-inline small">
-                                        Zalogowany jako: {{ session('user')->name }}
+                            @auth
+                                <a class="nav-link dropdown-toggle" id="loginDropdown" role="button"
+                                    aria-haspopup="true" aria-expanded="false">
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">
+                                        Zalogowany jako: {{ Auth::user()->name }}
                                     </span>
-                                    <img class="img-profile rounded-circle" src="/img/undraw_profile.svg"
-                                        alt="user">
+                                    <img class="img-profile rounded-circle" src="/img/undraw_profile.svg" alt="user"
+                                        style="width: 2rem; height: 2rem; object-fit: cover;">
+
                                     <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                                         @csrf
                                         <button type="submit" class="dropdown-item"
@@ -339,143 +344,143 @@
                                             <i class="mr-2 text-gray-400 fas fa-sign-out-alt fa-sm fa-fw"></i> Wyloguj
                                         </button>
                                     </form>
-                                @else
-                                    <a class="nav-link dropdown-toggle" href="{{ url('login') }}"
-                                        id="loginDropdown" role="button" aria-haspopup="true"
-                                        aria-expanded="false">
-                                        <span class="mr-2 d-none d-lg-inline text-gray-600 small">Zaloguj</span>
-                                        <img class="img-profile rounded-circle" src="/img/undraw_profile.svg">
-                                    </a>
+                                </a>
+                            @else
+                                <a class="nav-link dropdown-toggle" href="{{ url('login') }}" id="loginDropdown"
+                                    role="button" aria-haspopup="true" aria-expanded="false">
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small">Zaloguj</span>
+                                    <img class="img-profile rounded-circle" src="/img/undraw_profile.svg" alt="user">
+                                </a>
                                 @endif
-                            
-                            <!-- Dropdown - User Information -->
-                            <div class="shadow dropdown-menu dropdown-menu-right animated--grow-in"
-                                aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
-                                    <i class="mr-2 text-gray-400 fas fa-user fa-sm fa-fw"></i>
-                                    Profile
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="mr-2 text-gray-400 fas fa-cogs fa-sm fa-fw"></i>
-                                    Settings
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="mr-2 text-gray-400 fas fa-list fa-sm fa-fw"></i>
-                                    Activity Log
-                                </a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="#" data-toggle="modal"
-                                    data-target="#logoutModal">
-                                    <i class="mr-2 text-gray-400 fas fa-sign-out-alt fa-sm fa-fw"></i>
-                                    Logout
-                                </a>
-                            </div>
-                        </li>
 
-                    </ul>
+                                <!-- Dropdown - User Information -->
+                                <div class="shadow dropdown-menu dropdown-menu-right animated--grow-in"
+                                    aria-labelledby="userDropdown">
+                                    <a class="dropdown-item" href="#">
+                                        <i class="mr-2 text-gray-400 fas fa-user fa-sm fa-fw"></i>
+                                        Profile
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="mr-2 text-gray-400 fas fa-cogs fa-sm fa-fw"></i>
+                                        Settings
+                                    </a>
+                                    <a class="dropdown-item" href="#">
+                                        <i class="mr-2 text-gray-400 fas fa-list fa-sm fa-fw"></i>
+                                        Activity Log
+                                    </a>
+                                    <div class="dropdown-divider"></div>
+                                    <a class="dropdown-item" href="#" data-toggle="modal"
+                                        data-target="#logoutModal">
+                                        <i class="mr-2 text-gray-400 fas fa-sign-out-alt fa-sm fa-fw"></i>
+                                        Logout
+                                    </a>
+                                </div>
+                            </li>
 
-                </nav>
-                <!-- End of Topbar -->
+                        </ul>
 
-                <!-- Begin Page Content -->
-                <div class="container-fluid">
+                    </nav>
+                    <!-- End of Topbar -->
 
-                    <!-- Page Heading -->
-                    <div class="mb-4 d-sm-flex align-items-center justify-content-between">
-                        <h1 class="mb-0 text-gray-800 h3">Witaj na stronie z kotkami i filmami :&#41; </h1>
-                        <a href="#" class="shadow-sm d-none d-sm-inline-block btn btn-sm btn-primary">
-                            <strong>DATA: {{ date('d-m-y') }} </strong></a>
-                    </div>
+                    <!-- Begin Page Content -->
+                    <div class="container-fluid">
 
-                    @yield('content')
+                        <!-- Page Heading -->
+                        <div class="mb-4 d-sm-flex align-items-center justify-content-between">
+                            <h1 class="mb-0 text-gray-800 h3">Witaj na stronie z kotkami i filmami :&#41; </h1>
+                            <a href="#" class="shadow-sm d-none d-sm-inline-block btn btn-sm btn-primary">
+                                <strong>DATA: {{ date('d-m-y') }} </strong></a>
+                        </div>
 
-                    <div class="row">
-                        <!-- Project Card Example -->
-                        <div class="mb-4 shadow card">
-                            <div class="py-3 card-header">
-                                <h6 class="m-0 font-weight-bold text-primary">Kotek dnia</h6>
-                            </div>
-                            <div class="card-body">
-                                <div class="text-center">
-                                    <img class="px-3 mt-3 mb-4 img-fluid px-sm-4" style="width: 25rem;"
-                                        src="{{ $catImageUrl }}" alt="Kotek dnia">
+                        @yield('content')
 
+                        <div class="row">
+                            <!-- Project Card Example -->
+                            <div class="mb-4 shadow card">
+                                <div class="py-3 card-header">
+                                    <h6 class="m-0 font-weight-bold text-primary">Kotek dnia</h6>
+                                </div>
+                                <div class="card-body">
+                                    <div class="text-center">
+                                        <img class="px-3 mt-3 mb-4 img-fluid px-sm-4" style="width: 25rem;"
+                                            src="{{ $catImageUrl }}" alt="Kotek dnia">
+
+                                    </div>
                                 </div>
                             </div>
+
+                            <!-- Pole na ciekawotki o kotach brak API !!!S -->
+                            <!-- Illustrations
+                                    <div class="mb-4 shadow card">
+                                        <div class="py-3 card-header">
+                                            <h6 class="m-0 font-weight-bold text-primary">Ciekawe fakty</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <p>Pobieranie z api ciekawostek</p>
+                                        </div>
+                                    </div> -->
                         </div>
 
-                        <!-- Pole na ciekawotki o kotach brak API !!!S -->
-                        <!-- Illustrations
-                        <div class="mb-4 shadow card">
-                            <div class="py-3 card-header">
-                                <h6 class="m-0 font-weight-bold text-primary">Ciekawe fakty</h6>
+                        <!-- Footer -->
+                        <footer class="bg-white sticky-footer">
+                            <div class="container my-auto">
+                                <div class="my-auto text-center copyright">
+                                    <span>Praca zespołowa studentów CW 2025<span>
+                                </div>
                             </div>
-                            <div class="card-body">
-                                <p>Pobieranie z api ciekawostek</p>
-                            </div>
-                        </div> -->
+                        </footer>
+                        <!-- End of Footer -->
+
                     </div>
-
-                    <!-- Footer -->
-                    <footer class="bg-white sticky-footer">
-                        <div class="container my-auto">
-                            <div class="my-auto text-center copyright">
-                                <span>Praca zespołowa studentów CW 2025<span>
-                            </div>
-                        </div>
-                    </footer>
-                    <!-- End of Footer -->
+                    <!-- End of Content Wrapper -->
 
                 </div>
-                <!-- End of Content Wrapper -->
+                <!-- End of Page Wrapper -->
 
-            </div>
-            <!-- End of Page Wrapper -->
+                <!-- Scroll to Top Button-->
+                <a class="rounded scroll-to-top" href="#page-top">
+                    <i class="fas fa-angle-up"></i>
+                </a>
 
-            <!-- Scroll to Top Button-->
-            <a class="rounded scroll-to-top" href="#page-top">
-                <i class="fas fa-angle-up"></i>
-            </a>
-
-            <!-- Logout Modal-->
-            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
-                aria-labelledby="exampleModalLabel" aria-hidden="true">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">×</span>
-                            </button>
-                        </div>
-                        <div class="modal-body">Select "Logout" below if you are ready to end your current session.
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                            <a class="btn btn-primary" href="login.html">Logout</a>
+                <!-- Logout Modal-->
+                <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog"
+                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">Select "Logout" below if you are ready to end your current session.
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                                <a class="btn btn-primary" href="login.html">Logout</a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <!-- Bootstrap core JavaScript-->
-            <script src="/vendor/jquery/jquery.min.js"></script>
-            <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+                <!-- Bootstrap core JavaScript-->
+                <script src="/vendor/jquery/jquery.min.js"></script>
+                <script src="/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-            <!-- Core plugin JavaScript-->
-            <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
+                <!-- Core plugin JavaScript-->
+                <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-            <!-- Custom scripts for all pages-->
-            <script src="/js/sb-admin-2.min.js"></script>
+                <!-- Custom scripts for all pages-->
+                <script src="/js/sb-admin-2.min.js"></script>
 
-            <!-- Page level plugins -->
-            <script src="/vendor/chart.js/Chart.min.js"></script>
+                <!-- Page level plugins -->
+                <script src="/vendor/chart.js/Chart.min.js"></script>
 
-            <!-- Page level custom scripts -->
-            <script src="/js/demo/chart-area-demo.js"></script>
-            <script src="/js/demo/chart-pie-demo.js"></script>
+                <!-- Page level custom scripts -->
+                <script src="/js/demo/chart-area-demo.js"></script>
+                <script src="/js/demo/chart-pie-demo.js"></script>
 
-            <script src="/js/data.js'></script>
-</body>
+                <script src="/js/data.js'></script>
+    </body>
 
-</html>
+    </html>

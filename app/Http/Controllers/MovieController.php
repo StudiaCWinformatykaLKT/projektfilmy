@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
 
@@ -39,8 +40,7 @@ $moviesWew = DB::table('bazfilmowwew')->get()->map(function ($movie) {
     $movie->genre_ids = json_decode($movie->genre_ids, true) ?? [];
     return $movie;
     
-});
-dd($moviesWew);
+}); // Usunięto dd()
         return view('films', [
             'movies' => $movies,
             'moviesWew' => $moviesWew,
@@ -80,45 +80,94 @@ private function searchTmdb($query)
 public function show(Request $request, $id)
 {
     $source = $request->query('source', 'local');
+    $movie = null;
+    $movieExistsInLocalDb = false;
+    $localMovieId = null; // Inicjalizujemy ID filmu w lokalnej bazie
+
+    $currentUserFavorite = null; // Status ulubionych/oceny bieżącego użytkownika
+    $movie_id_for_actions = null; // ID filmu z tabeli bazfilmowwew do użycia w akcjach
+
     if ($source === 'local') {
-        $movie = DB::table('bazfilmowwew')->where('id', $id)->first(); 
-        $movieExistsInLocalDb = true;
-    } else {
+        // $id to ID filmu w tabeli bazfilmowwew
+        $movie = DB::table('bazfilmowwew')->where('id', $id)->first();
+        if ($movie) {
+            $movieExistsInLocalDb = true; // Film jest z lokalnej bazy
+            $localMovieId = $movie->id;   // ID lokalne to $id przekazane w URL
+            $movie_id_for_actions = $movie->id; // Ustawiamy ID dla akcji użytkownika
+        }
+    } else { // $source === 'api'
+        // $id to TMDB ID
         $apiKey = env('TMDB_API_KEY');
+        if (empty($apiKey)) {
+            Log::error('Klucz TMDB API nie jest ustawiony.');
+            abort(500, 'Błąd konfiguracji serwera.');
+        }
+
         $response = Http::get("https://api.themoviedb.org/3/movie/{$id}", [
             'api_key' => $apiKey,
+            'language' => 'pl-PL', // Pobieranie danych po polsku
         ]);
-        $movie = $response->json();
-        $movieExistsInLocalDb = false;
-        if (isset($movie['id'])) {
-            $movieExistsInLocalDb = DB::table('bazfilmowwew')->where('tmdb_id', $movie['id'])->exists();
+
+        if ($response->successful()) {
+            $movie = $response->json(); // Dane filmu z API jako tablica
+
+            // Sprawdzamy, czy API zwróciło poprawne dane filmu z 'id'
+            if (!empty($movie) && isset($movie['id'])) {
+                // Sprawdzamy, czy film z TMDB (identyfikowany przez $movie['id']) istnieje w lokalnej bazie
+                $localMovieRecord = DB::table('bazfilmowwew')->where('tmdb_id', $movie['id'])->first();
+                if ($localMovieRecord) {
+                    $movieExistsInLocalDb = true;
+                    $localMovieId = $localMovieRecord->id; // ID filmu w tabeli bazfilmowwew
+                    $movie_id_for_actions = $localMovieRecord->id; // Ustawiamy ID dla akcji użytkownika
+                }
+            } else {
+                // API zwróciło sukces, ale brak danych filmu lub są niekompletne
+                $movie = null;
+                Log::warning('TMDB API zwróciło sukces, ale brak poprawnych danych filmu.', ['tmdb_id' => $id, 'response' => $movie]);
+            }
+        } else {
+            Log::error('Błąd podczas pobierania filmu z TMDB API.', [
+                'tmdb_id' => $id,
+                'status' => $response->status(),
+                'body' => $response->body()
+            ]);
+            // $movie pozostaje null
         }
     }
-    $catImageUrl = app(\App\Http\Controllers\MainController::class)->getCatImageUrl();
-    $moviesWew = DB::table('bazfilmowwew')->get();
-    return view('movie_show', compact('movie', 'source', 'moviesWew', 'catImageUrl', 'movieExistsInLocalDb'));
-}
 
-    private function getCatImageUrl()
-{
-    $today = now()->toDateString();
-    $catOfTheDay = DB::table('kotdnia')->whereDate('created', $today)->first();
-    if ($catOfTheDay) {
-        return $catOfTheDay->url;
-    } else {
-        $response = Http::get('https://cataas.com/cat?type=medium&position=center&json=true');
-        $data = $response->json();
-        $newUrl = $data['url'];
-
-
-        DB::table('kotdnia')->insert([
-            'created' => $today,
-            'url' => $newUrl,
-        ]);
-        Log::info('Nowy wpis dodany do bazy danych.');
-
-        return $newUrl;
+    if (!$movie) {
+        abort(404, 'Film nie został znaleziony.');
     }
+
+    // Jeśli mamy ID filmu dla akcji i użytkownik jest zalogowany, pobierz jego status ulubionych/oceny
+    if (Auth::check() && $movie_id_for_actions) {
+        $currentUserFavorite = DB::table('fav_user_movie')
+            ->where('user_id', Auth::id())
+            ->where('movie_id', $movie_id_for_actions)
+            ->first(); // Zawiera 'rating', jeśli istnieje
+    }
+
+    // Pobierz liczbę ocen i średnią ocenę dla tego filmu z tabeli fav_user_movie
+    $ratingStats = null;
+    if ($movie_id_for_actions) {
+        $ratingStats = DB::table('fav_user_movie')
+            ->where('movie_id', $movie_id_for_actions)
+            ->select(DB::raw('COUNT(rating) as rating_count'), DB::raw('AVG(rating) as average_rating'))
+            ->first();
+    }
+
+    $catImageUrl = app(\App\Http\Controllers\MainController::class)->getCatImageUrl();
+    return view('movie_show', compact(
+        'movie',
+        'source',
+        'ratingStats',          // Nowe: Statystyki ocen
+        'movie_id_for_actions', // ID filmu z bazfilmowwew do akcji
+        'catImageUrl',
+        'movieExistsInLocalDb',
+        'localMovieId',
+        'movie_id_for_actions', // Nowe: ID filmu z bazfilmowwew do akcji
+        'currentUserFavorite'   // Nowe: Aktualny status ulubionych/oceny użytkownika
+    ));
 }
 
 public function addToLocal(Request $request)
@@ -171,5 +220,78 @@ Log::info('Dane do zapisu:', $data);
     );
 
     return redirect()->back()->with('success', 'Film został dodany/zaktualizowany w bazie!');
+}
+
+public function rateOrFavoriteMovie(Request $request)
+{
+    $request->validate([
+        'movie_id' => 'required|integer|exists:bazfilmowwew,id',
+        'rating' => 'nullable|integer|min:1|max:5', // Ocena jest opcjonalna
+    ]);
+
+    $userId = Auth::id();
+    if (!$userId) {
+        return back()->with('error', 'Musisz być zalogowany.');
+    }
+
+    $movieId = $request->input('movie_id');
+    $ratingValue = $request->input('rating'); // Przychodzi z przycisków oceny (może być "" dla usunięcia oceny)
+
+    $existingEntry = DB::table('fav_user_movie')
+        ->where('user_id', $userId)
+        ->where('movie_id', $movieId)
+        ->first();
+
+    $dataToUpdateOrInsert = [
+        'user_id' => $userId,
+        'movie_id' => $movieId,
+        'updated_at' => now(),
+    ];
+
+    $message = '';
+
+    if ($request->has('rating_action')) { // Jeśli kliknięto przycisk oceny
+        $dataToUpdateOrInsert['rating'] = ($ratingValue === "" || is_null($ratingValue)) ? null : (int)$ratingValue;
+        if ($existingEntry) {
+            $message = ($ratingValue === "" || is_null($ratingValue)) ? 'Ocena usunięta.' : 'Ocena zaktualizowana.';
+        } else {
+            $message = ($ratingValue === "" || is_null($ratingValue)) ? 'Film dodany do ulubionych (bez oceny).' : 'Film dodany do ulubionych i oceniony.';
+        }
+    } else { // Kliknięto przycisk "Dodaj do Ulubionych"
+        if ($existingEntry) {
+            $dataToUpdateOrInsert['rating'] = $existingEntry->rating; // Zachowaj istniejącą ocenę
+            $message = 'Film jest już w ulubionych.';
+        } else {
+            $dataToUpdateOrInsert['rating'] = null; // Nowy ulubiony, bez określonej oceny przez tę akcję
+            $message = 'Film dodany do ulubionych.';
+        }
+    }
+
+    DB::table('fav_user_movie')->updateOrInsert(
+        ['user_id' => $userId, 'movie_id' => $movieId], // Warunki wyszukiwania
+        array_merge($dataToUpdateOrInsert, $existingEntry ? [] : ['created_at' => now()]) // Dane do wstawienia/aktualizacji
+    );
+
+    return back()->with('success', $message);
+}
+
+public function removeFromFavorites(Request $request)
+{
+    $request->validate([
+        'movie_id' => 'required|integer|exists:bazfilmowwew,id',
+    ]);
+    $userId = Auth::id();
+    if (!$userId) { return back()->with('error', 'Musisz być zalogowany.'); }
+    $movieId = $request->input('movie_id');
+
+    $deleted = DB::table('fav_user_movie')
+        ->where('user_id', $userId)
+        ->where('movie_id', $movieId)
+        ->delete();
+
+    if ($deleted) {
+        return back()->with('success', 'Film usunięto z ulubionych.');
+    }
+    return back()->with('info', 'Film nie był w ulubionych.');
 }
 }
